@@ -1,0 +1,64 @@
+{% extends 'about.html' %}
+{% load static %}
+
+{% block icon %}{% block pageicon %}
+  {# about icon #}
+  {% static 'images/grub_invert.png' %}
+{% endblock pageicon %}{% endblock icon %}
+
+{% block podhosts %}
+  {{ block.super }}
+  {% load shuffle %}
+  {% for host in podhost_list|shuffle %}
+    {% if host.display_host %}
+      <div>
+        <table>
+          <tr>
+            <td>
+              <img
+                src="https://your_podcast-media.s3.amazonaws.com/profile_pics/{{ host.username }}.png"
+                width="80" height="80"
+                style="border-radius: 50%;">
+            </td>
+            <td>
+              <div class="podhostinfo">
+                <p>
+                  <b>{{ host.first_name }} {{ host.last_name }}</b>
+
+                  {# give users the option to edit their profile #}
+                  {% if host.username == user.username %}
+                    [<a href="{% url 'update' user.pk %}">edit</a>]
+                  {% endif %}
+                </p>
+                <p>{{ host.bio|linebreaks }}</p>
+                <p>
+                  {% if host.twitter != '' %}
+                    <a href="https://twitter.com/{{ host.twitter }}">
+                      Twitter
+                    </a> -
+                  {% endif %}
+                  {% if host.instagram != '' %}
+                    <a href="https://instagram.com/{{ host.instagram }}">
+                      Instagram
+                    </a> -
+                  {% endif %}
+                  {% if host.website != '' %}
+                    <a href="{{ host.website }}">Website</a>
+                  {% endif %}
+                </p>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    {% endif %}
+  {% endfor %}
+
+  {# give users without displayed profile the option to edit profile #}
+  {% if user.is_authenticated and not user.display_host %}
+    <p>
+      [<a href="{% url 'update' user.pk %}">Edit profile for {{ user.username }}</a>]
+    </p>
+  {% endif %}
+
+{% endblock podhosts %}

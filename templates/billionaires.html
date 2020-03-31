@@ -1,0 +1,26 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block icon %}{% block pageicon %}
+  {# topic icon #}
+  {% static 'images/grub_blue_teal.png' %}
+{% endblock pageicon %}{% endblock icon %}
+
+{% block title %}Topics{% endblock title %}
+
+{% block content %}
+  <h2>{{ topics_page.title }}</h2>
+
+  <p>
+    {% autoescape off %}
+      {{ topics_page.content|linebreaks }}
+    {% endautoescape %}
+    {% if user.is_authenticated %}
+      [<a href="{% url 'update_page' topics_page.pk %}">edit</a>]
+    {% endif %}
+  </p>
+
+    {% block topic_list %}
+    {% endblock topic_list %}
+
+{% endblock content %}

@@ -1,0 +1,90 @@
+{% extends '_base.html' %}
+
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+
+  {# -- Title and hidden edit link -- #}
+  <h2>{{ home.title }}</h2>
+
+  {# -- Display mutable homepage text -- #}
+  <div>
+    {% autoescape off %}
+      {{ home.content|linebreaks }}
+    {% endautoescape %}
+    {% if user.is_authenticated %}
+      [<a href="{% url 'update_page' home.pk %}">edit</a>]
+    {% endif %}
+  </div>
+
+  {# -- Most recent episode -- #}
+  <div><h4>Most recent episodes:</h4></div>
+  {% for episode in episode|slice:":2" %}
+    <div class="post-entry fancy-box">
+      <b><a href="{% url 'episode' episode.slug %}">
+        Episode {{ episode.episode_number }}:
+        {{ episode.episode_title }}</a></b>
+        {% if episode.patreon_episode %}
+          (<a href="{{ episode.patreon_link }}">Full episode on Patreon</a>)
+        {% endif %}
+      {% if user.is_authenticated %}
+        [<a href="{% url 'update_episode' episode.slug %}">edit</a>]
+      {% endif %}
+      {% if episode.embed != null %}
+        {% autoescape off %}
+          <div>{{ episode.embed }}</div>
+        {% endautoescape %}
+      {% endif %}
+      <div>
+        {% autoescape off %}
+          {{ episode.episode_description|truncatewords:50 }}
+        {% endautoescape %}
+        [<a href="{% url 'episode' episode.slug %}">Read more</a>]
+      </div>
+    </div>
+    <br>
+  {% endfor %}
+
+  {# -- Links -- #}
+  <div>
+    <div>
+      <div><b>Listen to us at:</b></div>
+      <div>
+        {# -- These need to be modified by hand -- #}
+        <a class="podcast-links"
+          href="https://soundcloud.com/your_podcast">SoundCloud</a> |
+        <a class="podcast-links"
+          href="https://open.spotify.com/show/your_podcast">Spotify</a> |
+        <a class="podcast-links"
+          href="https://podcasts.apple.com/us/podcast/your_podcast">Apple Podcasts</a> |
+        <a class="podcast-links"
+          href="https://www.stitcher.com/podcast/your_podcast">Stitcher</a> |
+        <a class="podcast-links"
+          href="https://play.google.com/music/listen?u=0#/ps/your_podcast">Google Play</a> |
+        <a class="podcast-links"
+          href="https://www.youtube.com/channel/your_channel">YouTube</a> |
+        <a class="podcast-links"
+          href="https://www.patreon.com/your_podcast">Patreon</a> (Premium)
+      </div>
+    </div>
+
+    <br>
+
+    <div>
+      <div><b>Chat with us on:</b></div>
+      <div>
+        <a class="podcast-links"
+          href="https://twitter.com/Your_Podcast">Twitter</a> |
+        <a class="podcast-links"
+          href="https://www.instagram.com/your_podcast/">Instagram</a> |
+        <a class="podcast-links"
+          href="https://www.facebook.com/Your_Podcast/">Facebook</a> |
+        <a class="podcast-links"
+          href="https://www.reddit.com/r/your_podcast/">Reddit</a>
+      </div>
+    </div>
+  </div>
+
+  <br>
+
+{% endblock content %}

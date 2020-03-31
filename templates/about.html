@@ -1,0 +1,26 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block icon %}{% block pageicon %}
+  {# about icon #}
+  {% static 'images/grub_invert.png' %}
+{% endblock pageicon %}{% endblock icon %}
+
+{% block title %}{{ about.title }}{% endblock title %}
+
+{% block content %}
+  <h2>{{ about.title }}</h2>
+
+  <p>
+    {% autoescape off %}
+      {{ about.content|linebreaks }}
+    {% endautoescape %}
+    {% if user.is_authenticated %}
+      [<a href="{% url 'update_page' about.pk %}">edit</a>]
+    {% endif %}
+  </p>
+
+  {% block podhosts %}
+  {% endblock podhosts %}
+
+{% endblock content %}

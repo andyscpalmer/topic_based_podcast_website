@@ -1,0 +1,104 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block icon %}{% block pageicon %}
+  {# topic icon #}
+  {% static 'images/grub_blue_teal.png' %}
+{% endblock pageicon %}{% endblock icon %}
+
+{% block title %}{{ topic.topic_name }}{% endblock title %}
+
+{% block content %}
+
+  <div class="post-entry">
+
+    {# -- Topic Name and net worth -- #}
+    <table cellpadding="10">
+      <tr>
+        <td>
+          <img
+            src="https://your_podcast-media.s3.amazonaws.com/topics/{{ topic.topic_pic_filename }}"
+            width="150" height="150" style="border-radius: 10%;" alt="{{ topic.topic_pic_caption }}">
+        </td>
+        <td valign="top">
+          <h2>{{ topic.topic_name }}</h2>
+          <div>
+            Net worth: <b>${{ topic.net_worth.normalize }}B</b>
+            {% if topic.net_worth_source_link %}
+              (<a href="{{ topic.net_worth_source_link}}">{{ topic.net_worth_source}}</a>{% if topic.net_worth_source_date %}, {{ topic.net_worth_source_date}}{% endif %})
+            {% endif %}
+          </div>
+          {% if user.is_authenticated %}
+            [<a href="{% url 'update_topic' topic.slug %}">edit</a>]
+          {% endif %}
+        </td>
+      </tr>
+    </table>
+
+    {# -- Topic bio -- #}
+    <div class="row">
+      <div class="col-md-10">
+        {% autoescape off %}
+          {{ topic.topic_bio|linebreaks }}
+        {% endautoescape %}
+      </div>
+    </div>
+
+    <br>
+
+    {# -- Episodes -- #}
+    {% if topic.episode.all %}
+      <h4>Episodes:</h4>
+      {% for episode in topic.episode.all %}
+        <div class="post-entry fancy-box">
+          <b><a href="{% url 'episode' episode.slug %}">
+            Episode {{ episode.episode_number }}:
+            {{ episode.episode_title }}</a></b>
+            {% if episode.patreon_episode %}
+              (<a href="{{ episode.patreon_link }}">Available on Patreon</a>)
+            {% endif %}
+          {% if episode.embed != null %}
+            {% autoescape off %}
+              <div>{{ episode.embed }}</div>
+            {% endautoescape %}
+          {% endif %}
+          <div>
+            {{ episode.episode_description|truncatewords:50 }}
+            [<a href="{% url 'episode' episode.slug %}">Read more</a>]
+          </div>
+        </div>
+        <br>
+      {% endfor %}
+    {% endif %}
+
+    {# -- Citations -- #}
+    {% if user.is_authenticated %}
+      [<a href="{% url 'add_topic_citation' %}">+ add citation</a>]
+    {% endif %}
+    {% if topic.citations.all %}
+      <h4>Citations: </h4>
+
+      {# -- Citation display -- #}
+      <ul>
+        {% for citation in topic.citations.all %}
+        <li>
+          <div>
+            <a href="{{ citation.citation_link }}">{{ citation.citation_title }}</a>
+            ({{ citation.citation_publication }})
+            {% if citation.archive_link_available %}
+              (<a href="{{ citation.archive_link }}">Internet archive</a>)
+            {% endif %}
+
+            {% if user.is_authenticated %}
+              [<a href="{% url 'update_topic_citation' citation.pk %}">edit</a>]
+            {% endif %}
+          </div>
+          <div>{{ citation.citation_description }}</div>
+        </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+  </div>
+
+{% endblock content %}

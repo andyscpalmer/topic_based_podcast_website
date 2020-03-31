@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Great place for a fun Easter Egg -->
+  <head>
+    <meta chaset="utf-8">
+    <meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="icon" type="image/png"
+      href="{% block icon %}{% static 'images/grub.png' %}{% endblock icon %}">
+    <title>{% block title %}Your_Podcast{% endblock title %}</title>
+  </head>
+  <body>
+    <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-12 nopadding">
+            <a href="{% url 'home' %}">
+              <img class="img-fluid d-none d-sm-block" src="{% static 'images/podcast_banner.jpg' %}">
+            </a>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-12 nopadding content-format">
+            <nav class="navbar navbar-expand-sm navbar-dark bg-dark mb-3">
+              <div class="container-fluid">
+                <div class="navbar-brand d-block d-sm-none">
+                  <img src="{% block pageicon %}{% static 'images/grub.png' %}{% endblock pageicon %}"
+                    width="30" height="30">
+                  Your_Podcast
+                </div>
+                <button type="button" class="navbar-toggler ml-auto" data-toggle="collapse" data-target="#navbarCollapse">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                  <div class="navbar-nav">
+                    <a href="{% url 'home' %}" class="nav-item nav-link active">Home</a>
+                    <a href="{% url 'podhost_list' %}" class="nav-item nav-link active">About</a>
+                    <a href="{% url 'episode_list' %}" class="nav-item nav-link active">Episodes</a>
+                    <a href="{% url 'topic_list' %}" class="nav-item nav-link active">Topic Directory</a>
+                  </div>
+                  <div class="navbar-nav ml-auto">
+                    <form class="form-inline mt2 mt-md-0" action="{% url 'search_results' %}" method="get">
+                      <input name="q" class="form-control mr-sm-2" type="text" placeholder="Topic Search" aria-label="Search">
+                    </form>
+                    {% comment %}
+                      <!-- log in/out bars removed -->
+                      {% if user.is_authenticated %}
+                        <a href="{% url 'account_logout' %}" class="nav-item nav-link">Log Out</a>
+                      {% else %}
+                        <a href="{% url 'account_login' %}" class="nav-item nav-link">Log In</a>
+                        <a href="{% url 'account_reset_password' %}" class="nav-item nav-link">Reset Password</a>
+                      {% endif %}
+                    {% endcomment %}
+                  </div>
+                </div>
+              </div>
+            </nav>
+          </div>
+        </div>
+        {% comment %}
+          <!-- Bootstrap width flags for formatting -->
+          <div class="row justify-content-center">
+            <div class="col-12 content-format">
+              <div class="d-sm-none">xsmall</div>
+              <div class="d-none d-md-none d-sm-block">small</div>
+              <div class="d-none d-lg-none d-md-block">medium</div>
+              <div class="d-none d-xl-none d-lg-block">large</div>
+              <div class="d-none d-xl-block">xlarge</div>
+            </div>
+          </div>
+        {% endcomment %}
+        <div class="row justify-content-center">
+          <div class="col-12 content-format">
+            {% block content %}
+            {% endblock content %}
+            <br>
+          </div>
+        </div>
+        {# -- footer -- #}
+
+          <footer class="row text-center py-3 footer-bs bg-dark text-white">
+            <div class="col-12">
+                &copy; 2020 Your Podcast LLC
+            </div>
+          </footer>
+      </div>
+    {% block javascript %}
+      <script src = "{% static 'js/base.js' %}"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+      <script src = "{% static 'js/bootstrap.min.js' %}"></script>
+    {% endblock javascript %}
+  </body>
+</html>

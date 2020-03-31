@@ -1,0 +1,26 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block icon %}{% block pageicon %}
+  {# episode page icon #}
+  {% static 'images/grub_blue_yellow.png' %}
+{% endblock pageicon %}{% endblock icon %}
+
+{% block title %}Episodes{% endblock title %}
+
+{% block content %}
+  <h2>{{ episodes_page.title }}</h2>
+
+  <p>
+    {% autoescape off %}
+      {{ episodes_page.content|linebreaks }}
+    {% endautoescape %}
+    {% if user.is_authenticated %}
+      [<a href="{% url 'update_page' episodes_page.pk %}">edit</a>]
+    {% endif %}
+  </p>
+
+    {% block episode_list %}
+    {% endblock episode_list %}
+
+{% endblock content %}

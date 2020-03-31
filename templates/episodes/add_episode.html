@@ -1,0 +1,22 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block icon %}{% block pageicon %}
+  {# episode page icon #}
+  {% static 'images/grub_blue_yellow.png' %}
+{% endblock pageicon %}{% endblock icon %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Add Episode{% endblock title %}
+
+{% block content %}
+
+  <h2>Add Episode</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button class="btn btn-success" type="submit">Add Episode</button>
+  </form>
+
+{% endblock content %}

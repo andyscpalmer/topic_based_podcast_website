@@ -1,0 +1,65 @@
+html {
+  height: 100%;
+}
+
+body {
+  font-family: "Source Sans Pro", Sans-serif;
+  background-color: #eeeeee;
+  height: 100%;
+}
+
+.content-format {
+  background-color: #ffffff;
+}
+
+.podhostinfo {
+  margin: 10px;
+}
+
+.topicinfo {
+  margin: 10px;
+}
+
+.banner-background {
+  background-color: #0f0f0f;
+}
+
+.nopadding {
+  padding: 0;
+  margin: 0;
+}
+
+.podcast-links {
+  font-weight: 900;
+}
+
+.fancy-box {
+  border-radius: 25px;
+  border: 2px solid #eeeeee;
+  padding: 20px;
+}
+
+/*.footer {
+  text-align: center;
+}
+
+a:link {
+  text-decoration: none;
+  color: #353545;
+}
+
+a:visited {
+  text-decoration: none;
+  color: #353535;
+}
+
+a:hover {
+  text-decoration: none;
+  color: #454560;
+}
+
+a:active {
+  text-decoration: none;
+  color: #604560;
+}
+*/

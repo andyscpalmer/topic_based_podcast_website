@@ -1,0 +1,61 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block icon %}{% block pageicon %}
+  {# about icon #}
+  {% static 'images/grub_invert.png' %}
+{% endblock pageicon %}{% endblock icon %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Update Your Shit{% endblock title %}
+
+{% block content %}
+
+  <h2>Update Your Shit</h2>
+  <p>Here's what your bio currently looks like:</p>
+  <p>
+    <table>
+      <tr>
+        <td>
+          <img
+            src="https://your_podcast-media.s3.amazonaws.com/profile_pics/{{ user.username }}.png"
+            width="80" height="80"
+            style="border-radius: 50%;">
+        </td>
+        <td>
+          <div class="podhostinfo">
+            <p>
+              <b>{{ user.first_name }} {{ usre.last_name }}</b>
+            </p>
+            <p>{{ user.bio|linebreaks }}</p>
+            <p>
+              {% if host.twitter != '' %}
+                <a href="https://twitter.com/{{ host.twitter }}">
+                  Twitter
+                </a> -
+              {% endif %}
+              {% if host.instagram != '' %}
+                <a href="https://instagram.com/{{ host.instagram }}">
+                  Instagram
+                </a> -
+              {% endif %}
+              {% if host.website != '' %}
+                <a href="{{ host.website }}">Website</a>
+              {% endif %}
+            </p>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </p>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <p>
+      <a href="{% url 'account_change_password' %}">Click here to change your password.</a>
+    </p>
+    <button class="btn btn-success" type="submit">Update</button>
+  </form>
+
+{% endblock content %}
